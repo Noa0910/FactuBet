@@ -9,6 +9,7 @@ import HomePage from './pages/HomePage';
 import EdeqPage from './pages/EdeqPage';
 import ModernLogin from './ModernLogin';
 import Dashboard from './pages/Dashboard';
+import DetailPage from './pages/DetailPage';
 import './App.css';
 
 const theme = createTheme({
@@ -126,6 +127,7 @@ function App() {
             <Route path="/edeq" element={<EdeqPage />} />
             <Route path="/login" element={<ModernLogin />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/detalle" element={<DetailPage />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </AppContainer>

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import relojImg from '../assets/images/reloj.png';
 import logoEpay from '../assets/images/logo_epay.png';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
 
 const TabsContainer = styled.div`
   background: white;
@@ -184,13 +186,13 @@ const InputContainer = styled.div`
   }
 `;
 
-const SubmitButton = styled.button`
+const SubmitButton = styled.button<{ enabled?: boolean }>`
   width: 38%;
   margin: 0 auto 20px auto;
   padding: 10px;
-  background: rgb(211, 212, 211);
-  color: white;
-  border: 2px solid rgb(211, 212, 211);
+  background: ${props => props.enabled ? 'black' : 'rgb(211, 212, 211)'};
+  color: ${props => props.enabled ? 'white' : 'white'};
+  border: 2px solid ${props => props.enabled ? 'black' : 'rgb(211, 212, 211)'};
   border-radius: 35px;
   font-size: 18px;
   cursor: pointer;
@@ -202,7 +204,7 @@ const SubmitButton = styled.button`
   font-weight: 500;
 
   &:hover {
-    background: #bdbebd;
+    background: ${props => props.enabled ? '#222' : '#bdbebd'};
   }
 
   &:disabled {
@@ -423,7 +425,31 @@ const PaymentPage: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [fixedOption, setFixedOption] = useState<'telefono' | 'referencia'>('telefono');
   const [selectedCity, setSelectedCity] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
   const cities = ['Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Bucaramanga'];
+
+  const handleConsultarPagar = async () => {
+    setError('');
+    // Solo buscamos si hay algo escrito
+    if (!phoneNumber) return;
+    // Buscar en invoices por payment_reference
+    const { data, error: supaError } = await supabase
+      .from('invoices')
+      .select('*')
+      .eq('payment_reference', phoneNumber)
+      .single();
+    if (supaError || !data) {
+      setError('Referencia no encontrada.');
+      return;
+    }
+    // Navegar a /detalle con los datos
+    navigate('/detalle', { state: {
+      full_name: data.full_name,
+      payment_reference: data.payment_reference,
+      invoice_value: data.invoice_value
+    }});
+  };
 
   return (
     <>
@@ -535,9 +561,15 @@ const PaymentPage: React.FC = () => {
         </>
       )}
 
-      <SubmitButton disabled={!phoneNumber}>
+      <SubmitButton
+        enabled={!!phoneNumber}
+        disabled={!phoneNumber}
+        onClick={handleConsultarPagar}
+      >
         Consultar y pagar
       </SubmitButton>
+
+      {error && <div style={{ color: 'red', textAlign: 'center', marginTop: 8 }}>{error}</div>}
 
       <DesktopOnly>
         <HelpLink href="https://youtu.be/xhBkmTbTAWYvvv" target="_blank" rel="noopener noreferrer">
