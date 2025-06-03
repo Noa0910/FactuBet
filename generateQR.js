@@ -1,8 +1,13 @@
 const QRCode = require('qrcode');
 
-const url = 'https://www.epaypago.com/movistar.recaudo';
+const urls = [
+  { url: 'https://www.epaypago.com/movistar.recaudo', file: 'public/qr/movistar-recaudo-qr.png' },
+  { url: 'https://www.epaypago.com/edeq', file: 'public/qr/edeq-recaudo-qr.png' }
+];
 
-QRCode.toFile('movistar-recaudo-qr.png', url, function (err) {
-  if (err) throw err;
-  console.log('¡QR generado como movistar-recaudo-qr.png!');
+urls.forEach(({ url, file }) => {
+  QRCode.toFile(file, url, function (err) {
+    if (err) throw err;
+    console.log(`¡QR generado como ${file}!`);
+  });
 }); 

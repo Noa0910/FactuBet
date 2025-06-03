@@ -26,7 +26,7 @@ const Dashboard = () => {
   // Placeholder de imágenes QR (puedes cambiar las URLs luego)
   const qrImages = {
     Movistar: '/qr/movistar-recaudo-qr.png',
-    Edeq: 'https://via.placeholder.com/200x200?text=QR+Edeq',
+    Edeq: '/qr/edeq-recaudo-qr.png',
     Epa: 'https://via.placeholder.com/200x200?text=QR+Epa',
     Efigas: 'https://via.placeholder.com/200x200?text=QR+Efigas',
   };
