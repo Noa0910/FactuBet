@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Movistar Payment Page Clone
 
 This is a React-based clone of the Movistar payment page, built with modern web technologies.
@@ -58,3 +59,6 @@ The application will be available at `http://localhost:3000`.
 ## License
 
 This project is for demonstration purposes only. All rights belong to their respective owners.
+=======
+# FactuBet
+>>>>>>> 64dc064ee3150738c3f39403636db5b00d764bf4
