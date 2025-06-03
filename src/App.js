@@ -109,7 +109,7 @@ function App() {
       <Router>
         <AppContainer>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<ModernLogin />} />
             <Route path="/movistar.recaudo" element={
               <>
                 <Header />
