@@ -22,9 +22,15 @@ const useIsMobile = () => {
   return isMobile;
 };
 
+const maskReference = (ref: string): string => {
+  if (!ref) return '';
+  if (ref.length <= 4) return '*'.repeat(ref.length);
+  return ref.slice(0, 1) + '*'.repeat(ref.length - 3) + ref.slice(-2);
+};
+
 const Detail: React.FC = () => {
   const location = useLocation();
-  const { full_name, payment_reference, invoice_value } = location.state || {};
+  const { full_name, payment_reference, invoice_value, invoice_pdf } = location.state || {};
   const isMobile = useIsMobile();
   // Aquí luego se traerán los datos de la base de datos
 
@@ -37,16 +43,25 @@ const Detail: React.FC = () => {
     };
   }, []);
 
+  // Función para abrir la factura PDF
+  const handleConsultarFactura = () => {
+    if (invoice_pdf) {
+      window.open(invoice_pdf, '_blank');
+    } else {
+      alert('No hay factura PDF disponible para este registro.');
+    }
+  };
+
   return (
     <>
       <Header />
       <div style={{ minHeight: '100vh', background: '#fff', paddingTop: 32 }}>
-        <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: 80, marginBottom: 8, marginTop: 120, maxWidth: 600, marginLeft: 630 }}>
+        <div className="detalle-header-superior" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: 80, marginBottom: 8, marginTop: 120, maxWidth: 600, marginLeft: 630 }}>
           <img src={movistar2} alt="Factura" style={{ maxHeight: 140, width: 'auto', objectFit: 'contain', display: 'block', marginTop: -36 }} />
           <div style={{ textAlign: 'left' }}>
             <div style={{ marginLeft: -50 }}>
               <div style={{ fontSize: 17, color: '#1a3c4e', marginBottom: 2, fontFamily: 'Georgia, Times New Roman, serif' }}>{maskName(full_name) || 'NI*** OS***'}</div>
-              <div style={{ fontWeight: 400, fontSize: 18, color: '#1a3c4e', marginBottom: 12 }}>Referencia de pago {payment_reference || '6******731'}</div>
+              <div style={{ fontWeight: 400, fontSize: 18, color: '#1a3c4e', marginBottom: 12 }}>Referencia de pago {maskReference(payment_reference) || '6******731'}</div>
             </div>
             {/* Solo visible en escritorio */}
             <div className="detalle-info-factura-escritorio">
@@ -89,12 +104,22 @@ const Detail: React.FC = () => {
           {isMobile ? (
             <div className="detalle-botones-movil">
               <button style={{ padding: '8px 60px', width: 180, borderRadius: 24, border: '1.5px solid #002c3e', background: '#fff', color: '#002c3e', fontWeight: 600, fontSize: 17, cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>Cancelar</button>
-              <button style={{ padding: '8px 60px', width: 180, borderRadius: 24, border: 'none', background: '#0d2c3e', color: '#fff', fontWeight: 600, fontSize: 17, cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.10)' }}>Pagar</button>
+              <button
+                style={{ padding: '8px 60px', width: 180, borderRadius: 24, border: 'none', background: '#0d2c3e', color: '#fff', fontWeight: 600, fontSize: 17, cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.10)' }}
+                onClick={handleConsultarFactura}
+              >
+                Consultar
+              </button>
             </div>
           ) : (
             <div style={{ display: 'flex', gap: 18, justifyContent: 'center', margin: '55px 0', marginTop: 32, marginBottom: 30 }}>
               <button style={{ padding: '8px 60px', width: 340, borderRadius: 28, border: '1.5px solid #002c3e', background: '#fff', color: '#002c3e', fontWeight: 600, fontSize: 22, cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>Cancelar</button>
-              <button style={{ padding: '8px 60px', width: 340, borderRadius: 28, border: 'none', background: '#0d2c3e', color: '#fff', fontWeight: 600, fontSize: 22, cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.10)' }}>Pagar</button>
+              <button
+                style={{ padding: '8px 60px', width: 340, borderRadius: 28, border: 'none', background: '#0d2c3e', color: '#fff', fontWeight: 600, fontSize: 22, cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.10)' }}
+                onClick={handleConsultarFactura}
+              >
+                Consultar
+              </button>
             </div>
           )}
           <div style={{ background: '#fff', borderRadius: 8, padding: 8, textAlign: 'left', color: '#222', fontSize: 15, marginBottom: 18, border: '1px solid #e3e8ee', width: '60vw', maxWidth: 1000, margin: '10px auto 18px auto', whiteSpace: 'nowrap' }}>
