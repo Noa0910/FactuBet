@@ -107,12 +107,12 @@ const Detail: React.FC = () => {
               <img src={movistar_pagos} alt="Movistar Pagos" className="detalle-img-pagos-escritorio" />
             )}
             {isMobile ? (
-              <div style={{ fontWeight: 500, color: '#888', fontSize: 15, marginTop: 8, marginLeft: -24 }}>
-                Pagos procesados por <img src={require('../assets/images/logo_epay.png')} alt="ePayco" style={{ height: 6, verticalAlign: 'middle', marginLeft: 4 }} />
+              <div className="detalle-pagos-procesados-movil" style={{ fontWeight: 500, color: '#888', fontSize: 15, marginTop: 8, marginLeft: -24 }}>
+                Pagos procesados por <img src={require('../assets/images/logo_epay.png')} alt="ePayco" className="detalle-logo-epay-movil" />
               </div>
             ) : (
               <div style={{ fontWeight: 500, color: '#888', fontSize: 15, marginTop: 8 }}>
-                Pagos procesados por <span style={{ color: '#2d174c', fontWeight: 700, fontStyle: 'italic' }}>ePayco</span>
+                Pagos procesados por <img src={require('../assets/images/logo_epay.png')} alt="ePayco" className="detalle-logo-epay-movil" />
               </div>
             )}
           </div>
