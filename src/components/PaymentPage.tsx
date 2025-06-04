@@ -444,7 +444,7 @@ const PaymentPage: React.FC = () => {
       return;
     }
     // Navegar a /detalle con los datos
-    navigate('/detalle', { state: {
+    navigate('/detail', { state: {
       full_name: data.full_name,
       payment_reference: data.payment_reference,
       invoice_value: data.invoice_value

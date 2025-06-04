@@ -113,8 +113,7 @@ const StyledInput = styled.input`
 const PolicyText = styled.span`
   font-size: 15px;
   @media (max-width: 600px) {
-    font-size: 11px;
-    font-weight: 700;
+    font-size: 12px;
   }
 `;
 
@@ -169,12 +168,7 @@ const EdeqPage: React.FC = () => {
       {/* Input con ícono */}
       <InputWrapper>
         <InputContainer>
-          <img
-            src="https://epayco-sftp-clients.s3.amazonaws.com/edeq/img/page.svg"
-            alt="phone icon"
-            className="edeq-input-icon"
-            style={{ height: 24, marginRight: 18, display: 'inline-block', verticalAlign: 'middle' }}
-          />
+          <img src="https://epayco-sftp-clients.s3.amazonaws.com/edeq/img/page.svg" alt="phone icon" style={{ height: 24, marginRight: 18, display: 'inline-block', verticalAlign: 'middle' }} />
           <StyledInput
             type="text"
             placeholder="Ingresa tu código NIU."
@@ -199,9 +193,7 @@ const EdeqPage: React.FC = () => {
             cursor: 'not-allowed',
             opacity: 1,
             display: 'block',
-            boxSizing: 'border-box',
           }}
-          className="edeq-pagar-btn"
           disabled
         >
           PAGAR
@@ -238,22 +230,10 @@ const EdeqPage: React.FC = () => {
             .edeq-header-img {
               height: 55px !important;
               object-fit: cover;
-              margin-bottom: 0 !important;
             }
             .edeq-logo2-img {
               margin-top: 0 !important;
               margin-bottom: 80px !important;
-              max-height: 130px !important;
-            }
-            .edeq-input-icon {
-              height: 21px !important;
-            }
-            .edeq-pagar-btn {
-              padding-left: 110px !important;
-              padding-right: 110px !important;
-              display: flex !important;
-              justify-content: center !important;
-              align-items: center !important;
             }
           }
         `}
