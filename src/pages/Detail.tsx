@@ -4,6 +4,7 @@ import imagen1 from '../assets/images/imagen1.png';
 import imagen2 from '../assets/images/imagen2.png';
 import movistar2 from '../assets/images/movistar2.png';
 import movistar_pagos from '../assets/images/movistar_pagos.png';
+import candadoIcon from '../assets/images/icons8-candado-24.png';
 import Header from '../components/Header';
 import './Detail.css';
 
@@ -75,7 +76,14 @@ const Detail: React.FC = () => {
           <div style={{ fontWeight: 400, fontSize: 17, color: '#4a5a6a' }}>Información de tu factura</div>
           <div style={{ color: '#888', fontSize: 15, marginTop: 2 }}>Factura No.BE********00</div>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', margin: '32px 0' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            margin: '32px 0',
+            marginLeft: isMobile ? 12 : undefined
+          }}
+        >
           <button style={{ background: '#019DF4', color: '#fff', border: 'none', borderRadius: 28, padding: '10px 18px', fontWeight: 400, fontSize: 17, boxShadow: '0 2px 8px rgba(1,157,244,0.10)', cursor: 'pointer', letterSpacing: 0.1 }}>Agregar otro número de línea u otra referencia de pago</button>
         </div>
         <div style={{ maxWidth: 900, margin: '0 auto', marginTop: 48 }}>

@@ -43,6 +43,30 @@ input {
   margin-right: 8px;
 }
 
+.icon-icon-recibo::before {
+  content: '\1F4C4'; /* Emoji de documento */
+  margin-right: 8px;
+  color: #002c3e;
+  font-size: 22px;
+  vertical-align: middle;
+}
+
+.icon-icon-telefono::before {
+  content: '\1F4DE'; /* Emoji de teléfono */
+  margin-right: 8px;
+  color: #002c3e;
+  font-size: 22px;
+  vertical-align: middle;
+}
+
+.icon-icon-tarjeta::before {
+  content: '📱';
+  margin-right: 8px;
+  color: #002c3e;
+  font-size: 22px;
+  vertical-align: middle;
+}
+
 /* Media queries */
 @media (max-width: 768px) {
   .container {
@@ -56,6 +80,42 @@ input {
   .payment-section {
     padding: 20px;
   }
+  
+  .fvBlaK img {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    display: block !important;
+  }
+}
+
+@media (max-width: 767px) and (orientation: portrait) {
+  .promo-movil-bg {
+    background-image: url('https://multimedia.epayco.co/landing-movistar/500X200.png');
+    background-repeat: no-repeat;
+    background-size: 100% 95%;
+    height: 30dvh;
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: 0;
+    margin-right: 0;
+    display: block;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .promo-movil-bg {
+    height: 160px !important;
+  }
+}
+
+.promo-movil-bg {
+  /* Imagen de fondo por defecto para escritorio o landscape */
+  background-image: url('https://multimedia.epayco.co/landing-movistar/465X686.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 /* Animaciones */
@@ -144,5 +204,13 @@ input {
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 600px) {
+  div[style*='width: 60vw'] {
+    width: 100vw !important;
+    max-width: 392px !important;
+    margin-left: 5vw !important;
   }
 }

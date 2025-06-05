@@ -31,11 +31,6 @@ const AppContainer = styled.div`
   flex-direction: column;
   min-height: 100vh;
   background-color: #fff;
-
-  @media (max-width: 768px) {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
 `;
 
 const MainContent = styled.div`
@@ -70,7 +65,7 @@ const PaymentSection = styled.div`
   }
 `;
 
-const PromoContainer = styled.div`
+const PromoContainer = styled.div.attrs({ className: 'promo-movil-bg' })`
   width: 40%;
   height: fit-content;
   margin-bottom: 120px;
@@ -90,16 +85,9 @@ const PromoContainer = styled.div`
     width: 100%;
     margin-bottom: 0;
     img {
-      position: static;
-      width: 100vw;
-      max-width: 100vw;
-      height: auto;
-      max-height: 200px;
-      object-fit: contain;
-      margin-top: 16px;
-      margin-left: 0;
-      margin-right: 0;
-      display: block;
+      display: none;
+      /* Para escritorio, pero si se habilita en móvil, usar esto: */
+      /* margin-top: 40px; */
     }
   }
 `;

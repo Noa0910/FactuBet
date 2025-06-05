@@ -3,12 +3,12 @@
   "name": "Movistar Portal de Recaudos",
   "icons": [
     {
-      "src": "favicon.png",
+      "src": "imagen2.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "favicon.png",
+      "src": "imagen2.png",
       "sizes": "512x512",
       "type": "image/png"
     }

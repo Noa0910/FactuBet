@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import relojImg from '../assets/images/reloj.png';
 import logoEpay from '../assets/images/logo_epay.png';
+import logoRefe from '../assets/images/logo_refe.png';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import movistarPagos2 from '../assets/images/movistar_pagos2.png';
+import smartphoneIcon from '../assets/images/icons8-smartphone-24.png';
+import candadoIcon from '../assets/images/icons8-candado-24.png';
 
 const TabsContainer = styled.div`
   background: white;
@@ -179,10 +183,6 @@ const InputContainer = styled.div`
       border-bottom: 1.5px solid black;
       box-shadow: none;
     }
-  }
-
-  i {
-    display: none;
   }
 `;
 
@@ -408,22 +408,22 @@ const DesktopOnly = styled.div`
   }
 `;
 
-const MobileOnly = styled.div`
+const MobileOnly = styled.div.attrs({ className: 'mobile-nuevos-medios' })`
   display: none;
   @media (max-width: 768px) {
     display: block;
     text-align: center;
     margin-top: 36px;
-    font-size: 16px;
+    font-size: 20px;
     width: 100%;
   }
 `;
 
 const PaymentPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('movistar');
-  const [paymentType, setPaymentType] = useState('mobile');
+  const [paymentType, setPaymentType] = useState('fixed');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [fixedOption, setFixedOption] = useState<'telefono' | 'referencia'>('telefono');
+  const [fixedOption, setFixedOption] = useState<'telefono' | 'referencia'>('referencia');
   const [selectedCity, setSelectedCity] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -518,23 +518,58 @@ const PaymentPage: React.FC = () => {
       )}
 
       {paymentType === 'mobile' && (
-        <InputContainer>
+        <InputContainer style={{ position: 'relative' }}>
+          <span className="icon css-1630ybo" style={{
+            position: 'absolute',
+            left: 6,
+            top: '50%',
+            transform: 'translateY(-50%)',
+            color: '#002c3e',
+            fontSize: 22,
+            pointerEvents: 'none',
+            zIndex: 2,
+            display: 'block',
+            height: 28,
+            width: 28
+          }}>
+            <img src={smartphoneIcon} alt="icono móvil" style={{ width: 28, height: 28, display: 'block' }} />
+          </span>
           <input
             type="text"
             placeholder="Ingresa el número de línea o pago"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
+            style={{ paddingLeft: 32 }}
           />
         </InputContainer>
       )}
 
       {paymentType === 'fixed' && fixedOption === 'referencia' && (
-        <InputContainer>
+        <InputContainer style={{ position: 'relative' }}>
+          <div className="icon css-1630ybo" style={{ position: 'absolute', left: -4, top: '50%', transform: 'translateY(-50%)', color: '#002c3e', fontSize: 22, pointerEvents: 'none', zIndex: 2, display: 'block', height: 36, width: 36 }}>
+            <img src={logoRefe} alt="icono referencia" style={{ width: 36, height: 36, display: 'block' }} />
+          </div>
           <input
             type="text"
             placeholder="Ingresa el número de pago"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
+            style={{ paddingLeft: 32 }}
+          />
+        </InputContainer>
+      )}
+
+      {paymentType === 'fixed' && fixedOption === 'telefono' && (
+        <InputContainer style={{ position: 'relative' }}>
+          <div className="icon css-1630ybo" style={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)', color: '#002c3e', fontSize: 22, pointerEvents: 'none', zIndex: 2, display: 'block' }}>
+            <i className="icon-icon-telefono" />
+          </div>
+          <input
+            type="text"
+            placeholder="Ingresa el número de línea"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            style={{ paddingLeft: 32 }}
           />
         </InputContainer>
       )}
@@ -577,12 +612,19 @@ const PaymentPage: React.FC = () => {
           ¿Cómo hacer mi pago?
         </HelpLink>
         <PaycoLine>
-          <LockIcon role="img" aria-label="candado">🔒</LockIcon>
+          <img src={candadoIcon} alt="candado" style={{ width: 22, height: 22, verticalAlign: 'middle', marginRight: 8, display: 'inline-block' }} />
           Pagos procesados por <img src={logoEpay} alt="ePayco" style={{ height: '22px', verticalAlign: 'middle', marginLeft: 4, marginRight: 2, display: 'inline-block' }} />
         </PaycoLine>
       </DesktopOnly>
       <MobileOnly>
         <span style={{ fontWeight: 'bold' }}>Nuevos medios de pago</span> para ti
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', margin: '6px 0 0 0', flexDirection: 'column', alignItems: 'center' }}>
+          <img src={movistarPagos2} alt="Medios de pago Movistar" style={{ maxWidth: '270px', width: '100vw', height: 'auto', display: 'block' }} />
+          <div style={{ display: 'flex', alignItems: 'center', color: '#002c3e', fontSize: 8, marginTop: 8 }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 18, height: 18, borderRadius: '50%', background: '#002c3e', color: '#fff', fontWeight: 700, fontSize: 14, marginRight: 6 }}>i</span>
+            <span>No se aceptan pagos con tarjetas de crédito Internacionales</span>
+          </div>
+        </div>
       </MobileOnly>
 
       <FooterInfo>
