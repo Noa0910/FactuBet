@@ -44,9 +44,11 @@ const Dashboard = () => {
   useEffect(() => {
     // Obtener usuario autenticado de localStorage
     const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    if (!storedUser) {
+      navigate('/login');
+      return;
     }
+    setUser(JSON.parse(storedUser));
     fetchInvoices();
     // eslint-disable-next-line
   }, [page, search]);
