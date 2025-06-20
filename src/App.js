@@ -7,6 +7,7 @@ import Header from './components/Header';
 import imagen1 from './assets/images/imagen1.png';
 import HomePage from './pages/HomePage';
 import EdeqPage from './pages/EdeqPage';
+import EdeqDetail from './pages/EdeqDetail';
 import ModernLogin from './ModernLogin';
 import Dashboard from './pages/Dashboard';
 import Detail from './pages/Detail';
@@ -113,6 +114,7 @@ function App() {
               </>
             } />
             <Route path="/edeq" element={<EdeqPage />} />
+            <Route path="/edeq.detail" element={<EdeqDetail />} />
             <Route path="/login" element={<ModernLogin />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/detail" element={<Detail />} />

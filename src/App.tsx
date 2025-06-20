@@ -7,6 +7,10 @@ import Header from './components/Header';
 import imagen1 from './assets/images/imagen1.png';
 import HomePage from './pages/HomePage';
 import EdeqPage from './pages/EdeqPage';
+import EdeqDetail from './pages/EdeqDetail';
+import ModernLogin from './ModernLogin';
+import Dashboard from './pages/Dashboard.js';
+import Detail from './pages/Detail';
 import './App.css';
 
 const theme = createTheme({
@@ -109,6 +113,7 @@ function App() {
       <Router>
         <AppContainer>
           <Routes>
+            <Route path="/login" element={<ModernLogin />} />
             <Route path="/" element={<HomePage />} />
             <Route path="/movistar" element={
               <>
@@ -124,6 +129,9 @@ function App() {
               </>
             } />
             <Route path="/edeq" element={<EdeqPage />} />
+            <Route path="/edeq.detail" element={<EdeqDetail />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/detail" element={<Detail />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </AppContainer>

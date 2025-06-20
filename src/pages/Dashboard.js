@@ -16,6 +16,7 @@ const Dashboard = () => {
     payment_reference: '',
     company: '',
     invoice_pdf: null,
+    limit_date: '',
   });
   const [uploading, setUploading] = useState(false);
   const [formError, setFormError] = useState('');
@@ -101,6 +102,10 @@ const Dashboard = () => {
         return;
       }
     }
+    if (form.company === 'Edeq' && !form.limit_date) {
+      setFormError('Para Edeq, la fecha límite de pago es obligatoria.');
+      return;
+    }
 
     setUploading(true);
     let pdfUrl = null;
@@ -115,22 +120,26 @@ const Dashboard = () => {
       }
       pdfUrl = supabase.storage.from('invoices').getPublicUrl(fileName).data.publicUrl;
     }
-    const { error } = await supabase.from('invoices').insert([
-      {
-        full_name: form.full_name,
-        invoice_value: form.invoice_value,
-        invoice_number: form.invoice_number,
-        payment_reference: form.payment_reference,
-        company: form.company,
-        invoice_pdf: pdfUrl,
-      },
-    ]);
+    const dataToInsert = {
+      full_name: form.full_name,
+      invoice_value: form.invoice_value,
+      invoice_number: form.invoice_number,
+      payment_reference: form.payment_reference,
+      company: form.company,
+      invoice_pdf: pdfUrl,
+    };
+
+    if (form.company === 'Edeq') {
+      dataToInsert.limit_date = form.limit_date;
+    }
+
+    const { error } = await supabase.from('invoices').insert([dataToInsert]);
     setUploading(false);
     if (error) {
       setFormError('Error guardando la factura: ' + error.message);
     } else {
       setShowModal(false);
-      setForm({ full_name: '', invoice_value: '', invoice_number: '', payment_reference: '', company: '', invoice_pdf: null });
+      setForm({ full_name: '', invoice_value: '', invoice_number: '', payment_reference: '', company: '', invoice_pdf: null, limit_date: '' });
       fetchInvoices();
     }
   };
@@ -266,6 +275,12 @@ const Dashboard = () => {
                     <option value="Efigas">Efigas</option>
                   </select>
                 </div>
+                {form.company === 'Edeq' && (
+                  <div className="modal-input-group">
+                    <span className="modal-input-icon">🗓️</span>
+                    <input name="limit_date" type="date" placeholder="Fecha límite de pago" value={form.limit_date} onChange={handleFormChange} required className="modal-input" />
+                  </div>
+                )}
                 <label className="modal-file-label" style={{width: '100%'}}>
                   <div className="modal-input-group">
                     <span className="modal-input-icon">📄</span>

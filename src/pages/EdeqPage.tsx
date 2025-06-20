@@ -5,6 +5,9 @@ import logoPse from '../assets/images/logo_pse.png';
 import logoDaviplata from '../assets/images/logo_daviplata.png';
 import logoEpay from '../assets/images/logo_epay.png';
 import styled from 'styled-components';
+import EdeqDetail from './EdeqDetail';
+import { supabase } from '../supabaseClient';
+import { useNavigate } from 'react-router-dom';
 
 const tabStyles = {
   border: '2px solid #008a99',
@@ -90,8 +93,8 @@ const InputContainer = styled.div`
   border-bottom: 1px solid #222;
   width: 380px;
   @media (max-width: 600px) {
-    width: 90vw;
-    max-width: 270px;
+    width: 70vw;
+    max-width: 220px;
     border-bottom: 1px solid #222;
   }
 `;
@@ -104,9 +107,9 @@ const StyledInput = styled.input`
   outline: none;
   background: transparent;
   @media (max-width: 600px) {
-    font-size: 16px;
-    width: 200px;
-    padding: 8px 0;
+    font-size: 14px;
+    width: 150px;
+    padding: 6px 0;
   }
 `;
 
@@ -120,6 +123,9 @@ const PolicyText = styled.span`
 const EdeqPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'factura' | 'somos'>('factura');
   const [checked, setChecked] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.body.style.overflowX = 'hidden';
@@ -128,25 +134,34 @@ const EdeqPage: React.FC = () => {
     };
   }, []);
 
+  const handlePayClick = async () => {
+    setError('');
+    if (!inputValue.trim()) return;
+
+    const { data, error: supaError } = await supabase
+      .from('invoices')
+      .select('*')
+      .eq('payment_reference', inputValue.trim())
+      .single();
+
+    if (supaError || !data) {
+      setError('Referencia no encontrada o inválida.');
+      return;
+    }
+
+    navigate('/edeq.detail', { state: { invoiceData: data } });
+  };
+
   return (
     <div style={{ textAlign: 'center', marginTop: 0, overflowX: 'hidden', width: '100vw', maxWidth: '100vw' }}>
       <img
         src={logoEdeq}
         alt="EDEQ"
-        style={{
-          width: '100vw',
-          maxWidth: '100vw',
-          display: 'block',
-          margin: 0,
-          padding: 0,
-          height: 'auto',
-        }}
         className="edeq-header-img"
       />
       <img
         src={logo2Edeq}
         alt="EDEQ Central"
-        style={{ margin: '40px auto 0 auto', display: 'block', maxWidth: 260, width: '100%', height: 'auto' }}
         className="edeq-logo2-img"
       />
 
@@ -168,13 +183,18 @@ const EdeqPage: React.FC = () => {
       {/* Input con ícono */}
       <InputWrapper>
         <InputContainer>
-          <img src="https://epayco-sftp-clients.s3.amazonaws.com/edeq/img/page.svg" alt="phone icon" style={{ height: 24, marginRight: 18, display: 'inline-block', verticalAlign: 'middle' }} />
+          <img src="https://epayco-sftp-clients.s3.amazonaws.com/edeq/img/page.svg" alt="phone icon" style={{ marginRight: 18, display: 'inline-block', verticalAlign: 'middle' }} />
           <StyledInput
             type="text"
             placeholder="Ingresa tu código NIU."
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
           />
         </InputContainer>
       </InputWrapper>
+
+      {/* Mostrar mensaje de error si existe */}
+      {error && <div style={{ color: 'red', marginBottom: 16, fontSize: 14 }}>{error}</div>}
 
       {/* Botón pagar y texto ePayco */}
       <div style={{ display: 'flex', justifyContent: 'center', margin: '18px 0 8px 0' }}>
@@ -183,18 +203,19 @@ const EdeqPage: React.FC = () => {
             width: '40%',
             minWidth: 120,
             maxWidth: 220,
-            background: '#eaeaea',
+            background: inputValue.trim() ? '#008a99' : '#eaeaea',
             color: '#fff',
             fontWeight: 700,
             fontSize: 20,
             border: 'none',
             borderRadius: 32,
             padding: '1px 32px',
-            cursor: 'not-allowed',
+            cursor: inputValue.trim() ? 'pointer' : 'not-allowed',
             opacity: 1,
             display: 'block',
           }}
-          disabled
+          disabled={!inputValue.trim()}
+          onClick={handlePayClick}
         >
           PAGAR
         </button>
@@ -208,11 +229,13 @@ const EdeqPage: React.FC = () => {
         <label style={{ display: 'flex', alignItems: 'center' }}>
           <input type="checkbox" checked={checked} onChange={e => setChecked(e.target.checked)} style={{ marginRight: 8 }} />
           <PolicyText>
-            Acepto la{' '}
-            <a href="#" style={{ color: '#3fa9f5', textDecoration: 'underline', fontWeight: 500, fontSize: 13 }}>
-              política de tratamiento de datos personales
-            </a>{' '}
-            de EDEQ.
+            <strong style={{ fontWeight: 'bold' }}>
+              Acepto la{' '}
+              <a href="#" style={{ color: '#3fa9f5', textDecoration: 'underline', fontWeight: 500, fontSize: 13 }}>
+                política de tratamiento de datos personales
+              </a>{' '}
+              de EDEQ.
+            </strong>
           </PolicyText>
         </label>
       </div>
@@ -226,14 +249,110 @@ const EdeqPage: React.FC = () => {
 
       <style>
         {`
+          .edeq-header-img {
+            width: 100vw;
+            display: block;
+          }
+          .edeq-logo2-img {
+            margin: 40px auto 0 auto;
+            display: block;
+            max-width: 260px;
+            width: 100%;
+          }
+
           @media (max-width: 600px) {
             .edeq-header-img {
-              height: 55px !important;
-              object-fit: cover;
+              height: auto;
+              object-fit: contain;
+            }
+            div[style*='text-align: center'] img {
+              height: 40px !important;
             }
             .edeq-logo2-img {
-              margin-top: 0 !important;
-              margin-bottom: 80px !important;
+              margin-top: 20px !important;
+              margin-bottom: 20px !important;
+              width: 50% !important;
+              max-width: 215px !important;
+              /* height: 150px; */
+              height: 100px !important;
+              /* object-fit: contain !important; */
+            }
+            div[style*='marginRight: 18'] img {
+              width: 12px !important;
+              height: 12px !important;
+              margin-right: 12px !important;
+            }
+            div[style*='height: 15px'][style*='display: inline-block'] img {
+              height: 5px !important;
+            }
+            img[alt="pasarella icon"] {
+              height: 12px !important;
+            }
+            div[style*='justify-content: center'][style*='align-items: center'][style*='margin-bottom: 16'] img[alt="pasarella icon"] {
+              height: 15px !important;
+            }
+            div[style*='text-align: center'] div {
+              font-size: 17px !important;
+              margin-top: 4px !important;
+            }
+            .dJzqmF {
+              width: 90vw;
+              max-width: 335px;
+              border-bottom: 1px solid #222;
+            }
+            .hItQOD {
+              width: 85vw;
+              max-width: 450px;
+              border-bottom: 1px solid #222;
+            }
+            .jEpOYx {
+              width: 80vw;
+              max-width: 260px;
+              font-size: 15px;
+              padding: 6px 0;
+              margin: 0;
+              margin-top: 90px !important;
+            }
+            div[style*='justify-content: center'] button {
+              width: 65vw !important;
+              max-width: 440px !important;
+              font-size: 16px !important;
+              padding: 7px 0 !important;
+              border-radius: 24px !important;
+              margin-top: 23px !important;
+              margin-right: 10px !important;
+              display: block !important;
+            }
+            .jmLiJM {
+              padding: 6px 0 !important;
+              margin: 0 !important;
+            }
+            .fvKMSl {
+              padding: 6px 0 !important;
+              margin-top: 90px !important;
+            }
+            .hpXTql {
+              padding: 6px 0 !important;
+              margin: 0 !important;
+            }
+            div[style*='font-weight: 700'][style*='margin-bottom: 0'][style*='margin-top: 18'][style*='font-size: 13'] {
+              font-size: 11px !important;
+            }
+            .hVzNxJ {
+              font-size: 10px !important;
+            }
+            div[style*='font-weight: 680'][style*='margin-bottom: 0px'][style*='margin-top: 18px'][style*='font-size: 13px'] {
+              font-weight: 680 !important;
+            }
+            div[style*='justify-content: center'][style*='align-items: center'][style*='gap: 0'][style*='margin-bottom: 24'][style*='margin-top: -14'] img[alt="PSE"] {
+              height: 110px !important;
+            }
+            div[style*='justify-content: center'][style*='align-items: center'][style*='gap: 0'][style*='margin-bottom: 24'][style*='margin-top: -14'] img[alt="Daviplata"] {
+              height: 25px !important;
+            }
+            div[style*='justify-content: center'][style*='align-items: center'][style*='gap: 0'][style*='margin-bottom: 24'][style*='margin-top: -14'] {
+              margin-top: -20px !important;
+              margin-left: -10px !important;
             }
           }
         `}
