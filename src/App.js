@@ -8,6 +8,8 @@ import imagen1 from './assets/images/imagen1.png';
 import HomePage from './pages/HomePage';
 import EdeqPage from './pages/EdeqPage';
 import EdeqDetail from './pages/EdeqDetail';
+import EpaPage from './pages/EpaPage';
+import EpaRecaudo from './pages/EpaRecaudo';
 import ModernLogin from './ModernLogin';
 import Dashboard from './pages/Dashboard';
 import Detail from './pages/Detail';
@@ -87,8 +89,6 @@ const PromoContainer = styled.div.attrs({ className: 'promo-movil-bg' })`
     margin-bottom: 0;
     img {
       display: none;
-      /* Para escritorio, pero si se habilita en móvil, usar esto: */
-      /* margin-top: 40px; */
     }
   }
 `;
@@ -100,22 +100,28 @@ function App() {
         <AppContainer>
           <Routes>
             <Route path="/" element={<ModernLogin />} />
-            <Route path="/movistar.recaudo" element={
-              <>
-                <Header />
-                <MainContent>
-                  <PaymentSection>
-                    <PaymentPage />
-                  </PaymentSection>
-                  <PromoContainer>
-                    <img src={imagen1} alt="Promoción" />
-                  </PromoContainer>
-                </MainContent>
-              </>
-            } />
+            <Route path="/login" element={<ModernLogin />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/epa" element={<EpaPage />} />
+            <Route path="/epa-recaudo" element={<EpaRecaudo />} />
+            <Route
+              path="/movistar.recaudo"
+              element={
+                <>
+                  <Header />
+                  <MainContent>
+                    <PaymentSection>
+                      <PaymentPage />
+                    </PaymentSection>
+                    <PromoContainer>
+                      <img src={imagen1} alt="Promoción" />
+                    </PromoContainer>
+                  </MainContent>
+                </>
+              }
+            />
             <Route path="/edeq" element={<EdeqPage />} />
             <Route path="/edeq.detail" element={<EdeqDetail />} />
-            <Route path="/login" element={<ModernLogin />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/detail" element={<Detail />} />
             <Route path="*" element={<Navigate to="/" />} />
