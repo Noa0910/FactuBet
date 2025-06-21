@@ -17,6 +17,7 @@ const Dashboard = () => {
     company: '',
     invoice_pdf: null,
     limit_date: '',
+    id_number: '',
   });
   const [uploading, setUploading] = useState(false);
   const [formError, setFormError] = useState('');
@@ -28,7 +29,7 @@ const Dashboard = () => {
   const qrImages = {
     Movistar: '/qr/movistar-recaudo-qr.png',
     Edeq: '/qr/edeq-recaudo-qr.png',
-    Epa: 'https://via.placeholder.com/200x200?text=QR+Epa',
+    Epa: '/qr/epa-recaudo-qr.png',
     Efigas: 'https://via.placeholder.com/200x200?text=QR+Efigas',
   };
 
@@ -106,6 +107,10 @@ const Dashboard = () => {
       setFormError('Para Edeq, la fecha límite de pago es obligatoria.');
       return;
     }
+    if (form.company === 'Epa' && !form.id_number.trim()) {
+      setFormError('Para EPA, el número de identidad es obligatorio.');
+      return;
+    }
 
     setUploading(true);
     let pdfUrl = null;
@@ -132,6 +137,9 @@ const Dashboard = () => {
     if (form.company === 'Edeq') {
       dataToInsert.limit_date = form.limit_date;
     }
+    if (form.company === 'Epa') {
+      dataToInsert.id_number = form.id_number;
+    }
 
     const { error } = await supabase.from('invoices').insert([dataToInsert]);
     setUploading(false);
@@ -139,7 +147,7 @@ const Dashboard = () => {
       setFormError('Error guardando la factura: ' + error.message);
     } else {
       setShowModal(false);
-      setForm({ full_name: '', invoice_value: '', invoice_number: '', payment_reference: '', company: '', invoice_pdf: null, limit_date: '' });
+      setForm({ full_name: '', invoice_value: '', invoice_number: '', payment_reference: '', company: '', invoice_pdf: null, limit_date: '', id_number: '' });
       fetchInvoices();
     }
   };
@@ -279,6 +287,12 @@ const Dashboard = () => {
                   <div className="modal-input-group">
                     <span className="modal-input-icon">🗓️</span>
                     <input name="limit_date" type="date" placeholder="Fecha límite de pago" value={form.limit_date} onChange={handleFormChange} required className="modal-input" />
+                  </div>
+                )}
+                {form.company === 'Epa' && (
+                  <div className="modal-input-group">
+                    <span className="modal-input-icon">🆔</span>
+                    <input name="id_number" placeholder="Número de identidad" value={form.id_number} onChange={handleFormChange} required className="modal-input" />
                   </div>
                 )}
                 <label className="modal-file-label" style={{width: '100%'}}>
