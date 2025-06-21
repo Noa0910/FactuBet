@@ -119,7 +119,7 @@ const Footer = styled.footer`
 
 const EpaPage: React.FC = () => {
   const navigate = useNavigate();
-  const [matricula, setMatricula] = useState('78493');
+  const [matricula, setMatricula] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
