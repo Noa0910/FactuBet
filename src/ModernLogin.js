@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from './supabaseClient';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { useFavicon } from './hooks/useFavicon';
+import { usePageTitle } from './hooks/usePageTitle';
+import favicon from './assets/images/favicon.jpg';
 import logoLogin from './assets/images/logo_login.jpeg';
 
 const ModernLogin = () => {
+  useFavicon(favicon);
+  usePageTitle('FactuBet');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);

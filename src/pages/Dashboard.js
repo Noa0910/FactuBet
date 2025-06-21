@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
+import { useFavicon } from '../hooks/useFavicon';
+import { usePageTitle } from '../hooks/usePageTitle';
+import favicon from '../assets/images/favicon.jpg';
 
 const Dashboard = () => {
+  useFavicon(favicon);
+  usePageTitle('Dashboard principal');
   const [recibos, setRecibos] = useState([]);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
