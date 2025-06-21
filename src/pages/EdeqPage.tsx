@@ -8,6 +8,8 @@ import styled from 'styled-components';
 import EdeqDetail from './EdeqDetail';
 import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
+import { usePageTitle } from '../hooks/usePageTitle';
+import { useFavicon } from '../hooks/useFavicon';
 
 const tabStyles = {
   border: '2px solid #008a99',
@@ -121,6 +123,8 @@ const PolicyText = styled.span`
 `;
 
 const EdeqPage: React.FC = () => {
+  usePageTitle('Edeq');
+  useFavicon('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABwklEQVR4AdxRQ2AcARTd2nZ7qnupbdu2bduKbdu2bdv2rD1x8mL7mo/bxwNlEASHTDwdT5gplPBiv5ZVcQ8AmDGgA/9jdV4oBS+Acth66EUfhmvGh6J0hosyv5zYD2BKnwcuRSVPjC4Qd1EMXQ2FkBVQCF0JxdBV0I7aB7uUR0WBedKumUxPeUE5cQnAvG6PABiVxfJWtE1+QNOM3AmVejRq4eugFra6vuuPRW6AWexheKc+YxUXmVqxaQn6HFrGr9pKcmnnQ2PKKml3k+guUg6Z0maa8e/yZCKf8T753cIP/6f44PkLF6xUYJyUFO6id608QPNsTMviEGGlYEEAEfBOMl4q8I7f3cJjrifIbXa7scNmP974fam95aKACTK/cNMrLKAm1+k7W2ZmheG3Zbmtn1WTldy2O27DToctOOi0E4edD+CR332WfZaj6UV7MTbl/0XMVRMlGUL6FZ7lWgHxZzicZfeFtMGvLZ9CkAWrwuhxp2KZCcc5ZcXbhRXCQzvMPqRRfm7CPtPfqaks+hayqnJUNRF8HSnm4iQrb1WvDrlmR91cqXOXFAs10/qelDGFMtA4H55YNzag9yQYhjcAAPPzFozWjGUwAAAAAElFTkSuQmCC');
   const [activeTab, setActiveTab] = useState<'factura' | 'somos'>('factura');
   const [checked, setChecked] = useState(false);
   const [inputValue, setInputValue] = useState('');

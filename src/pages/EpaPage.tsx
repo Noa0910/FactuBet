@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import logoEpa1 from '../assets/images/logo_epa1.png';
 import logoEpa2 from '../assets/images/logo_epa2.png';
 import { supabase } from '../supabaseClient';
+import { useFavicon } from '../hooks/useFavicon';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 const PageContainer = styled.div`
   display: flex;
@@ -118,6 +120,8 @@ const Footer = styled.footer`
 `;
 
 const EpaPage: React.FC = () => {
+  useFavicon('/favicon-epa.png');
+  usePageTitle('EPA');
   const navigate = useNavigate();
   const [matricula, setMatricula] = useState('');
   const [loading, setLoading] = useState(false);

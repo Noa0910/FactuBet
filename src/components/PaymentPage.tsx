@@ -3,11 +3,13 @@ import styled from 'styled-components';
 import relojImg from '../assets/images/reloj.png';
 import logoEpay from '../assets/images/logo_epay.png';
 import logoRefe from '../assets/images/logo_refe.png';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import movistarPagos2 from '../assets/images/movistar_pagos2.png';
 import smartphoneIcon from '../assets/images/icons8-smartphone-24.png';
 import candadoIcon from '../assets/images/icons8-candado-24.png';
+import { useFavicon } from '../hooks/useFavicon';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 const TabsContainer = styled.div`
   background: white;
@@ -420,6 +422,9 @@ const MobileOnly = styled.div.attrs({ className: 'mobile-nuevos-medios' })`
 `;
 
 const PaymentPage: React.FC = () => {
+  useFavicon('/imagen2.png');
+  usePageTitle('Movistar portal de recaudo');
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState('movistar');
   const [paymentType, setPaymentType] = useState('fixed');
   const [phoneNumber, setPhoneNumber] = useState('');

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import logoEpa1 from '../assets/images/logo_epa1.png';
@@ -7,6 +7,8 @@ import logoEpa2 from '../assets/images/logo_epa2.png';
 import logoEpay from '../assets/images/logo_epay.png'; 
 import logoPseEpa from '../assets/images/logo-pse-epa.png'; 
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import { useFavicon } from '../hooks/useFavicon';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 // --- Componentes de Layout (Reutilizados de EpaPage) ---
 const PageContainer = styled.div`
@@ -177,10 +179,11 @@ const StyledButton = styled.button`
 
 
 const EpaRecaudo: React.FC = () => {
+  useFavicon('/favicon-epa.png');
+  usePageTitle('EPA');
   const navigate = useNavigate();
   const location = useLocation();
   
-  // Aquí recibes los datos de la factura desde la página anterior
   const invoiceData = location.state?.invoiceData || {};
   const [idType, setIdType] = useState(invoiceData.owner_id_type || 'C.C');
 
