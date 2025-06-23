@@ -236,6 +236,7 @@ interface EdeqDetailProps {
     invoice_value: number;
     limit_date: string;
     full_name: string;
+    invoice_pdf?: string;
   };
   onBack?: () => void;
 }
@@ -309,38 +310,14 @@ const EdeqDetail: React.FC<EdeqDetailProps> = ({ invoiceData: propInvoiceData, o
       return;
     }
 
-    // Validar que el invoiceData tenga los datos necesarios
-    if (!invoiceData.payment_reference || !invoiceData.invoice_value) {
-      setError('Datos de factura incompletos.');
+    // Verificar si existe el PDF en los datos de la factura
+    if (!invoiceData.invoice_pdf) {
+      setError('No hay PDF disponible para esta factura.');
       return;
     }
 
-    try {
-      // Verificar que la factura existe en la base de datos
-      const { data, error: supaError } = await supabase
-        .from('invoices')
-        .select('*')
-        .eq('payment_reference', invoiceData.payment_reference)
-        .single();
-
-      if (supaError || !data) {
-        setError('Factura no encontrada o inválida.');
-        return;
-      }
-
-      // Verificar si existe el PDF
-      if (!data.invoice_pdf) {
-        setError('No hay PDF disponible para esta factura.');
-        return;
-      }
-
-      // Abrir el PDF en una nueva pestaña
-      window.open(data.invoice_pdf, '_blank');
-      
-    } catch (error) {
-      setError('Error al consultar la factura.');
-      console.error('Error:', error);
-    }
+    // Abrir el PDF en una nueva pestaña
+    window.open(invoiceData.invoice_pdf, '_blank');
   };
 
   return (
