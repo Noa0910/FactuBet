@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import movistar2 from '../assets/images/movistar2.png';
 import movistar_pagos from '../assets/images/movistar_pagos.png';
 import logoEpay from '../assets/images/logo_epay.png';
+import { useFavicon } from '../hooks/useFavicon';
 import './Detail.css';
 
 const maskName = (name) => {
@@ -36,6 +37,7 @@ const DetailContainer = styled.div`
 `;
 
 const Detail = () => {
+  useFavicon('/imagen2.png');
   const location = useLocation();
   const [invoice, setInvoice] = useState(location.state || null);
   const [loading, setLoading] = useState(!location.state);
